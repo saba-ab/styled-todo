@@ -6,8 +6,11 @@ export const TaskList = styled.div`
   flex-direction: column;
   gap: 10px;
   border-radius: 8px;
-  background: #fff;
-  // padding: 10px;
 `;
 
-// export const Checkbox = styled.
+export const Task = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  background: #fff;
+`;
