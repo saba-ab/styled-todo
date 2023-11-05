@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, KeyboardEvent } from "react";
+import React, { useState } from "react";
 import { Container } from "./components/styled/Container.styled";
 import { Todo } from "./components/styled/Todo.styled";
 import { Input } from "./components/styled/Input.styled";
@@ -10,22 +10,20 @@ import {
   Check,
   TodoText,
 } from "./components/styled/TaskList.styled";
-import moment from "moment";
 import checked from "./components/checked.svg";
-
+import { colors, handleTimeConvertion } from "./utils";
+import {
+  HandleTodo,
+  TodoInt,
+  InputChange,
+} from "./components/InterfaceStorage";
 const App: React.FC = () => {
   const [todoInput, setTodoInput] = useState<string>("");
   const [todos, setTodos] = useState<TodoInt[]>([]);
-  interface TodoInt {
-    text: string;
-    isChecked: boolean;
-    postedAt: number;
-  }
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleInputChange = ({ e }: InputChange) => {
     setTodoInput(e.target.value);
   };
-
-  const handleTodo = (e: KeyboardEvent): void => {
+  const handleTodo = ({ e }: HandleTodo) => {
     if (todoInput !== "" && e.key === "Enter") {
       const newTodo: TodoInt = {
         text: todoInput,
@@ -36,17 +34,6 @@ const App: React.FC = () => {
       setTodoInput("");
     }
   };
-  const handleTimeConvertion = (time: number): string => {
-    return moment(time).fromNow();
-  };
-  const color1 = "#FF5733";
-  const color2 = "#33FF57";
-  const color3 = "#3357FF";
-  const color4 = "#FF33A1";
-  const color5 = "#A133FF";
-
-  const colors = [color1, color2, color3, color4, color5];
-
   const handleRemove = (indexToRemove: number) => {
     const updatedTodos = todos.filter((_, index) => index !== indexToRemove);
     setTodos(updatedTodos);
@@ -57,15 +44,14 @@ const App: React.FC = () => {
       !updatedTodos[indexToCheck].isChecked;
     setTodos(updatedTodos);
   };
-
   return (
     <Container>
       <Todo>
         <Input
           value={todoInput}
           placeholder="Create new task"
-          onChange={handleInputChange}
-          onKeyDown={handleTodo}
+          onChange={(e) => handleInputChange({ e })}
+          onKeyDown={(e) => handleTodo({ e })}
         />
         <TaskList>
           {todos.map((todo, index) => (
